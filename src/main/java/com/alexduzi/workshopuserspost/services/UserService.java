@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alexduzi.workshopuserspost.domain.User;
+import com.alexduzi.workshopuserspost.dto.UserDTO;
 import com.alexduzi.workshopuserspost.repository.UserRepository;
 import com.alexduzi.workshopuserspost.services.exception.ObjectNotFoundException;
 
@@ -25,5 +26,13 @@ public class UserService {
 		}
 		
 		return repository.findById(id).get();
+	}
+	
+	public User insert(User user) {
+		return repository.insert(user);
+	}
+	
+	public User fromDTO(UserDTO objDto) {
+		return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
 	}
 }
