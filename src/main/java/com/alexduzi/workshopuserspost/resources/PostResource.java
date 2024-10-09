@@ -1,5 +1,6 @@
 package com.alexduzi.workshopuserspost.resources;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,21 @@ public class PostResource {
 		text = URL.decodeParam(text);
 		
 		List<Post> posts = postService.findByTitle(text);
+		
+		return ResponseEntity.ok().body(posts);
+	}
+	
+	@GetMapping(value = "/fullsearch") // @RequestParam indica que o parametro será um query string
+	public ResponseEntity<List<Post>> fullSearch(
+			@RequestParam(value = "text", defaultValue = "") String text, 
+			@RequestParam(value = "minDate", defaultValue = "") String minDate,
+			@RequestParam(value = "maxDate", defaultValue = "") String maxDate) {
+		
+		text = URL.decodeParam(text);
+		LocalDate min = URL.convertDate(minDate, LocalDate.now());
+		LocalDate max = URL.convertDate(maxDate, LocalDate.now());
+		
+		List<Post> posts = postService.fullSearch(text, min, max);
 		
 		return ResponseEntity.ok().body(posts);
 	}
